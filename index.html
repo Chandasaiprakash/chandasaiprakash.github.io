@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chanda Sai Prakash — Backend Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #00ff88;
+  --green-dim: #00cc66;
+  --green-dark: #003a1e;
+  --green-glow: rgba(0,255,136,0.10);
+  --amber: #ffb347;
+  --cyan: #00e5ff;
+  --red: #ff5555;
+  --purple: #c084fc;
+  --bg: #080808;
+  --bg2: #0d0d0d;
+  --bg3: #111111;
+  --border: rgba(0,255,136,0.16);
+  --border-bright: rgba(0,255,136,0.45);
+  --text: #c8f0c8;
+  --text-dim: #4e7a4e;
+  --font: 'JetBrains Mono', monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.7;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.02) 2px,rgba(0,0,0,0.02) 4px);pointer-events:none;z-index:9999;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;background:rgba(8,8,8,0.97);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:52px;z-index:1000;backdrop-filter:blur(12px);}
+.nav-logo{color:var(--green);font-size:13px;font-weight:700;letter-spacing:.05em;white-space:nowrap;}
+.nav-logo span{color:var(--text-dim);font-weight:400;}
+nav ul{display:flex;gap:0;list-style:none;}
+nav ul li a{color:var(--text-dim);text-decoration:none;font-size:10px;padding:6px 10px;border:1px solid transparent;transition:all .2s;letter-spacing:.07em;text-transform:uppercase;display:block;}
+nav ul li a:hover{color:var(--green);border-color:var(--border);background:var(--green-glow);}
+nav ul li a.active{color:var(--green);}
+
+/* ── LAYOUT ── */
+.wrap{max-width:960px;margin:0 auto;padding:0 2rem;}
+
+/* ── HERO ── */
+#about{min-height:100vh;display:flex;align-items:center;padding:6rem 2rem 4rem;max-width:960px;margin:0 auto;}
+.hero-inner{width:100%;}
+.prompt-line{color:var(--text-dim);font-size:12px;margin-bottom:1.5rem;}
+.prompt-line .p1{color:var(--green);}
+.prompt-line .p2{color:var(--cyan);}
+.hero-name{font-size:clamp(2rem,6vw,3.8rem);font-weight:700;color:var(--green);line-height:1.1;letter-spacing:-.02em;margin-bottom:.5rem;}
+.cursor{display:inline-block;width:10px;height:1.1em;background:var(--green);vertical-align:text-bottom;animation:blink 1s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero-title{font-size:clamp(.9rem,2.2vw,1.15rem);color:var(--text-dim);font-weight:300;margin-bottom:1.5rem;}
+.hero-title .hi{color:var(--amber);}
+.hero-bio{font-size:13px;color:var(--text);max-width:640px;margin-bottom:1rem;border-left:2px solid var(--green-dim);padding-left:1rem;line-height:1.9;}
+.open-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,255,136,0.07);border:1px solid var(--green-dim);color:var(--green);font-size:10px;padding:5px 14px;margin-bottom:2rem;letter-spacing:.09em;text-transform:uppercase;}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
+.hero-stats{display:flex;gap:2.5rem;margin-bottom:2.5rem;flex-wrap:wrap;}
+.stat{display:flex;flex-direction:column;}
+.stat-num{font-size:1.7rem;font-weight:700;color:var(--green);}
+.stat-label{font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;}
+.hero-links{display:flex;gap:.8rem;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;font-family:var(--font);font-size:10px;letter-spacing:.09em;text-decoration:none;border:1px solid var(--border-bright);color:var(--green);background:transparent;cursor:pointer;transition:all .2s;text-transform:uppercase;}
+.btn:hover{background:var(--green-glow);border-color:var(--green);box-shadow:0 0 18px rgba(0,255,136,.1);}
+.btn-primary{background:var(--green-dark);border-color:var(--green);}
+.btn-primary:hover{background:rgba(0,255,136,.2);}
+.btn-resume{background:rgba(0,255,136,.12);border-color:var(--green);font-weight:700;font-size:11px;}
+.btn-resume:hover{background:rgba(0,255,136,.25);}
+
+/* ── SECTIONS ── */
+section.sec{padding:5rem 2rem;max-width:960px;margin:0 auto;}
+.sec-header{display:flex;align-items:center;gap:1rem;margin-bottom:3rem;}
+.sec-tag{color:var(--text-dim);font-size:11px;}
+.sec-title{font-size:1.3rem;font-weight:700;color:var(--green);letter-spacing:.05em;}
+.sec-line{flex:1;height:1px;background:var(--border);}
+
+/* ── TERMINAL ── */
+.term{background:var(--bg2);border:1px solid var(--border);margin-bottom:1.5rem;overflow:hidden;}
+.term-bar{background:var(--bg3);border-bottom:1px solid var(--border);padding:8px 14px;display:flex;align-items:center;gap:7px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dr{background:#ff5f57}.dy{background:#ffbd2e}.dg{background:#28ca41}
+.term-title{margin-left:6px;font-size:10px;color:var(--text-dim);letter-spacing:.05em;}
+.term-body{padding:1.2rem 1.5rem;font-size:12px;line-height:2;}
+.k{color:var(--cyan)}.v{color:var(--text)}.s{color:var(--amber)}.c{color:var(--text-dim)}.g{color:var(--green)}.r{color:var(--red)}.pu{color:var(--purple)}
+
+/* ── TAGS ── */
+.tag{font-size:10px;padding:3px 9px;border:1px solid var(--border);color:var(--text-dim);letter-spacing:.03em;transition:all .2s;white-space:nowrap;}
+.tag:hover{border-color:var(--green-dim);color:var(--green);background:var(--green-glow);cursor:default;}
+.tag.hot{border-color:rgba(0,255,136,.38);color:var(--green);}
+.tags{display:flex;flex-wrap:wrap;gap:6px;}
+
+/* ── SKILLS GRID ── */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:1rem;}
+.sg{background:var(--bg2);border:1px solid var(--border);padding:1.2rem 1.5rem;transition:border-color .2s;}
+.sg:hover{border-color:var(--border-bright);}
+.sg-title{color:var(--green);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);}
+
+/* ── ARCH CARDS ── */
+.arch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:2rem;}
+.arch-card{background:var(--bg2);border:1px solid var(--border);padding:1.3rem 1.5rem;}
+.arch-card-title{font-size:10px;color:var(--cyan);text-transform:uppercase;letter-spacing:.12em;font-weight:700;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);}
+.arch-card p{font-size:12px;color:var(--text-dim);line-height:1.85;}
+.arch-card strong{color:var(--text);}
+.arch-card .tradeoff{font-size:11px;color:var(--amber);margin-top:.6rem;padding-top:.5rem;border-top:1px solid rgba(255,179,71,.15);}
+
+/* ── PROJECT CARDS ── */
+.project-card{background:var(--bg2);border:1px solid var(--border);margin-bottom:2rem;overflow:hidden;position:relative;}
+.project-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--green-dim);opacity:0;transition:opacity .2s;}
+.project-card:hover{border-color:var(--border-bright);}
+.project-card:hover::before{opacity:1;}
+
+.project-card.flagship{border-color:rgba(0,255,136,.32);}
+.project-card.flagship::before{opacity:1;background:linear-gradient(to bottom,var(--green),var(--green-dim));}
+
+.pc-header{display:flex;justify-content:space-between;align-items:flex-start;padding:1.4rem 1.5rem 1rem 1.8rem;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:.5rem;}
+.pc-title{font-size:1rem;font-weight:700;color:var(--green);margin-bottom:3px;}
+.pc-sub{font-size:11px;color:var(--text-dim);}
+.badge{font-size:9px;padding:2px 10px;border:1px solid;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;}
+.badge-prod{color:var(--green);border-color:var(--green-dim);background:var(--green-dark);}
+.badge-personal{color:var(--cyan);border-color:rgba(0,229,255,.3);background:rgba(0,229,255,.04);}
+
+.pc-body{padding:1.3rem 1.5rem 1.3rem 1.8rem;}
+.pc-section{margin-bottom:1.4rem;}
+.pc-section:last-child{margin-bottom:0;}
+.pc-section-label{font-size:9px;text-transform:uppercase;letter-spacing:.13em;color:var(--amber);margin-bottom:.6rem;font-weight:700;}
+
+.decision-row{display:flex;flex-direction:column;gap:.45rem;}
+.decision-item{display:flex;gap:.8rem;font-size:11.5px;align-items:baseline;}
+.dc{color:var(--cyan);min-width:185px;flex-shrink:0;}
+.dw{color:var(--text-dim);}
+.dt{color:var(--amber);font-size:10.5px;}
+
+.failure-item{display:flex;gap:.8rem;font-size:12px;padding:7px 0;border-bottom:1px solid rgba(0,255,136,.05);}
+.failure-item:last-child{border-bottom:none;}
+.fi-icon{color:var(--red);flex-shrink:0;font-size:13px;}
+.fi-text{color:var(--text-dim);line-height:1.75;}
+.fi-text strong{color:var(--text);}
+
+.pc-metrics{display:flex;gap:1.5rem;flex-wrap:wrap;padding:1rem 1.5rem 1rem 1.8rem;border-top:1px solid var(--border);background:rgba(0,255,136,.02);}
+.metric{display:flex;flex-direction:column;}
+.metric-val{font-size:1rem;font-weight:700;color:var(--green);}
+.metric-key{font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;}
+.pc-footer-tags{display:flex;flex-wrap:wrap;gap:6px;padding:1rem 1.5rem 1.3rem 1.8rem;}
+
+/* ── DIAGRAM ── */
+.diagram-wrap{background:var(--bg2);border:1px solid var(--border);padding:0;margin-bottom:1.5rem;overflow:hidden;}
+.diagram-bar{background:var(--bg3);border-bottom:1px solid var(--border);padding:8px 14px;display:flex;align-items:center;gap:7px;}
+.diagram-title{margin-left:6px;font-size:10px;color:var(--text-dim);letter-spacing:.05em;}
+.diagram-body{padding:1.5rem;overflow-x:auto;}
+.diagram-body svg{display:block;min-width:600px;}
+
+/* ── INCIDENTS ── */
+.incident-card{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);margin-bottom:1.2rem;padding:1.3rem 1.5rem;}
+.incident-card.resolved{border-left-color:var(--green-dim);}
+.incident-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.8rem;flex-wrap:wrap;gap:.4rem;}
+.incident-title{font-size:.9rem;font-weight:700;color:var(--red);}
+.incident-card.resolved .incident-title{color:var(--green);}
+.incident-badge{font-size:9px;padding:2px 8px;border:1px solid var(--red);color:var(--red);text-transform:uppercase;letter-spacing:.07em;}
+.incident-card.resolved .incident-badge{border-color:var(--green-dim);color:var(--green);}
+.incident-block{margin-bottom:.8rem;}
+.incident-block-title{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--text-dim);margin-bottom:.3rem;font-weight:700;}
+.incident-block p,.incident-block li{font-size:12px;color:var(--text-dim);line-height:1.8;}
+.incident-block strong{color:var(--text);}
+.incident-block ul{list-style:none;padding-left:0;}
+.incident-block ul li::before{content:'→ ';color:var(--green-dim);}
+.incident-learning{background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.12);padding:.7rem 1rem;font-size:11.5px;color:var(--text);line-height:1.75;margin-top:.5rem;}
+.incident-learning::before{content:'💡 ';font-size:12px;}
+
+/* ── SECURITY SECTION ── */
+.security-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;}
+.sec-card{background:var(--bg2);border:1px solid var(--border);padding:1.2rem 1.5rem;}
+.sec-card-title{font-size:10px;color:var(--purple);text-transform:uppercase;letter-spacing:.12em;font-weight:700;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid rgba(192,132,252,.12);}
+.sec-card p{font-size:12px;color:var(--text-dim);line-height:1.85;}
+.sec-card strong{color:var(--text);}
+
+/* ── EXPERIENCE ── */
+.exp-block{background:var(--bg2);border:1px solid var(--border);padding:1.5rem;margin-bottom:1.5rem;}
+.exp-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;}
+.exp-company{font-size:1rem;font-weight:700;color:var(--green);}
+.exp-role{font-size:12px;color:var(--amber);margin-top:2px;}
+.exp-date{font-size:10px;color:var(--text-dim);text-align:right;}
+.exp-bullets{list-style:none;margin-top:1rem;}
+.exp-bullets li{font-size:12.5px;color:var(--text-dim);padding:4px 0 4px 1.2rem;position:relative;line-height:1.75;}
+.exp-bullets li::before{content:'▸';position:absolute;left:0;color:var(--green-dim);}
+.exp-bullets li strong{color:var(--text);font-weight:500;}
+
+/* ── CONTACT ── */
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;}
+.contact-item{background:var(--bg2);border:1px solid var(--border);padding:1.2rem 1.5rem;text-decoration:none;display:flex;flex-direction:column;gap:4px;transition:all .2s;}
+.contact-item:hover{border-color:var(--border-bright);background:var(--green-glow);}
+.contact-label{font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;}
+.contact-val{font-size:12px;color:var(--green);}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--text-dim);font-size:11px;max-width:960px;margin:0 auto;}
+
+/* ── SCROLL ANIM ── */
+.fade-in{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  nav ul{display:none;}
+  .hero-stats{gap:1.5rem;}
+  .hero-links{flex-direction:column;}
+  .btn{justify-content:center;}
+  .decision-item{flex-direction:column;gap:2px;}
+  .dc{min-width:unset;}
+  .pc-header{padding:1.2rem 1.2rem .8rem 1.4rem;}
+  .pc-body{padding:1.2rem 1.2rem 1.2rem 1.4rem;}
+  .pc-metrics{padding:.9rem 1.2rem .9rem 1.4rem;}
+  .pc-footer-tags{padding:.8rem 1.2rem 1.1rem 1.4rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo">csp<span>@portfolio</span>:~$</div>
+  <ul>
+    <li><a href="#about">about</a></li>
+    <li><a href="#skills">skills</a></li>
+    <li><a href="#architecture">arch</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#incidents">incidents</a></li>
+    <li><a href="#security">security</a></li>
+    <li><a href="#experience">exp</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="about">
+  <div class="hero-inner">
+    <div class="prompt-line"><span class="p1">csp@backend</span>:<span class="p2">~/portfolio</span>$ cat about.txt</div>
+    <h1 class="hero-name">Chanda Sai Prakash<span class="cursor"></span></h1>
+    <p class="hero-title"> Backend Engineer &mdash; <span class="hi">Distributed Systems</span> &amp; Event-Driven Architecture</p>
+    <p class="hero-bio">
+      3.7+ years building production-grade backend systems in banking and IoT domains.
+      I propose and drive architectural decisions — Kafka adoption, Saga design, CQRS strategy — within cross-functional teams, reviewed with senior architects.
+      Not just ticket execution: system design, failure ownership, and tradeoff reasoning.
+    </p>
+    <div class="open-badge" style="margin-top:1rem;">
+      <span class="badge-dot"></span>Open to SDE2 / Senior Backend roles — Hyderabad / Remote India
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">3.7+</span><span class="stat-label">Years Exp</span></div>
+      <div class="stat"><span class="stat-num">5M+</span><span class="stat-label">Events/Day</span></div>
+      <div class="stat"><span class="stat-num">800→500ms</span><span class="stat-label">P95 Latency</span></div>
+      <div class="stat"><span class="stat-num">&lt;0.2%</span><span class="stat-label">Data Loss (was 5%)</span></div>
+    </div>
+    <div class="hero-links">
+      <a href="Chanda_Sai_Prakash_Resume_BE.pdf" download class="btn btn-resume">⬇ Download Resume</a>
+      <a href="https://github.com/Chandasaiprakash" target="_blank" class="btn btn-primary">⌥ GitHub</a>
+      <a href="https://www.linkedin.com/in/chandasaiprakash/" target="_blank" class="btn">in LinkedIn</a>
+      <a href="mailto:chandasaiprakash123@gmail.com" class="btn">@ Email</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ── -->
+<section class="sec" id="skills">
+  <div class="sec-header fade-in">
+    <span class="sec-tag">02.</span>
+    <h2 class="sec-title">skills.json</h2>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="term fade-in">
+    <div class="term-bar"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div><span class="term-title">skills.json</span></div>
+    <div class="term-body">
+      <div><span class="k">"core"</span>: [<span class="s">"Java 21"</span>, <span class="s">"Spring Boot 3.x"</span>, <span class="s">"Spring Cloud"</span>, <span class="s">"Spring Security"</span>],</div>
+      <div><span class="k">"messaging"</span>: [<span class="s">"Apache Kafka"</span>, <span class="s">"Idempotent Consumers"</span>, <span class="s">"DLQ"</span>, <span class="s">"Retry Topics"</span>, <span class="s">"Outbox Pattern"</span>, <span class="s">"Manual Offset Commit"</span>],</div>
+      <div><span class="k">"databases"</span>: [<span class="s">"MySQL"</span>, <span class="s">"MongoDB"</span>, <span class="s">"Redis (Caffeine)"</span>, <span class="s">"PostgreSQL"</span>],</div>
+      <div><span class="k">"cloud"</span>: [<span class="s">"AWS EKS"</span>, <span class="s">"EC2"</span>, <span class="s">"S3"</span>, <span class="s">"IAM"</span>, <span class="s">"CloudWatch"</span>],</div>
+      <div><span class="k">"patterns"</span>: [<span class="s">"Orchestrated Saga"</span>, <span class="s">"CQRS"</span>, <span class="s">"Outbox"</span>, <span class="s">"Compensating Transactions"</span>, <span class="s">"Circuit Breaker"</span>, <span class="s">"Bulkhead"</span>],</div>
+      <div><span class="k">"observability"</span>: [<span class="s">"OpenTelemetry"</span>, <span class="s">"Prometheus"</span>, <span class="s">"Grafana"</span>, <span class="s">"ELK"</span>, <span class="s">"Jaeger"</span>],</div>
+      <div><span class="k">"security"</span>: [<span class="s">"JWT / OAuth2"</span>, <span class="s">"Spring Security"</span>, <span class="s">"Rate Limiting"</span>, <span class="s">"PII Masking"</span>, <span class="s">"RBAC"</span>]</div>
+    </div>
+  </div>
+
+  <div class="skills-grid fade-in">
+    <div class="sg"><div class="sg-title">// Languages &amp; Frameworks</div><div class="tags"><span class="tag hot">Java 21</span><span class="tag hot">Spring Boot</span><span class="tag hot">Spring Cloud</span><span class="tag">Spring Security</span><span class="tag">OpenFeign</span></div></div>
+    <div class="sg"><div class="sg-title">// Messaging &amp; Async</div><div class="tags"><span class="tag hot">Apache Kafka</span><span class="tag hot">Idempotent Consumers</span><span class="tag">Retry Topics</span><span class="tag">DLQ</span><span class="tag">Outbox Pattern</span></div></div>
+    <div class="sg"><div class="sg-title">// Databases</div><div class="tags"><span class="tag hot">MySQL</span><span class="tag hot">Redis</span><span class="tag">MongoDB</span><span class="tag">PostgreSQL</span><span class="tag">Caffeine</span></div></div>
+    <div class="sg"><div class="sg-title">// Cloud &amp; DevOps</div><div class="tags"><span class="tag hot">AWS EKS</span><span class="tag hot">Docker</span><span class="tag hot">Kubernetes</span><span class="tag">Terraform</span><span class="tag">Helm</span><span class="tag">GitHub Actions</span></div></div>
+    <div class="sg"><div class="sg-title">// Architecture Patterns</div><div class="tags"><span class="tag hot">Saga Orchestration</span><span class="tag hot">CQRS</span><span class="tag hot">Outbox</span><span class="tag">Resilience4j</span><span class="tag">Bulkhead</span><span class="tag">Circuit Breaker</span></div></div>
+    <div class="sg"><div class="sg-title">// Observability</div><div class="tags"><span class="tag hot">OpenTelemetry</span><span class="tag">Prometheus</span><span class="tag">Grafana</span><span class="tag">ELK Stack</span><span class="tag">Jaeger</span></div></div>
+  </div>
+</section>
+
+<!-- ── ARCHITECTURE ── -->
+<section class="sec" id="architecture">
+  <div class="sec-header fade-in">
+    <span class="sec-tag">03.</span>
+    <h2 class="sec-title">architecture/</h2>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="term fade-in">
+    <div class="term-bar"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div><span class="term-title">design-decisions.md — decisions I proposed and drove, reviewed with senior architects</span></div>
+    <div class="term-body">
+      <div><span class="c"># architecture decisions — 4-member backend team @ Accenture</span></div>
+      <div>&nbsp;</div>
+      <div><span class="g">architecture/</span></div>
+      <div>&nbsp;├── <span class="k">payment-saga-flow/</span> &nbsp;&nbsp;&nbsp;&nbsp;<span class="c">// orchestration vs choreography — why orchestration won</span></div>
+      <div>&nbsp;├── <span class="k">kafka-topic-strategy/</span> &nbsp;<span class="c">// partition design, ordering tradeoffs, exactly-once cost</span></div>
+      <div>&nbsp;├── <span class="k">cqrs-read-models/</span> &nbsp;&nbsp;&nbsp;&nbsp;<span class="c">// redis denormalization, memory cost vs DB cost</span></div>
+      <div>&nbsp;├── <span class="k">outbox-pattern/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c">// exactly-once publishing, polling overhead</span></div>
+      <div>&nbsp;└── <span class="k">resilience-strategy/</span> &nbsp;&nbsp;<span class="c">// circuit breaker, bulkhead, timeout tuning</span></div>
+    </div>
+  </div>
+
+  <div class="arch-grid fade-in">
+    <div class="arch-card">
+      <div class="arch-card-title">⚡ Kafka over REST — why</div>
+      <p>Payment and order flows needed <strong>burst tolerance</strong>. REST coupling would fail under traffic spikes — consumer slowness propagates back to producers immediately. Kafka decouples ingestion from processing, giving us backpressure handling, replay, and independent scaling.</p>
+      <div class="tradeoff">⚖ Tradeoff: accepted eventual consistency on order status (vs immediate). Added polling endpoint for clients needing synchronous confirmation. Kafka cluster adds operational overhead — justified vs DB-queue polling at 5M events/day.</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-card-title">🔀 Orchestration vs Choreography</div>
+      <p>Chose <strong>orchestrated Saga</strong> (central coordinator) over choreography for payment flows. In choreography, debugging a stuck saga requires reconstructing state from events across 6 services — operationally painful. Coordinator gives single source of truth for saga state.</p>
+      <div class="tradeoff">⚖ Tradeoff: coordinator is a coupling point and single point of failure. Mitigated by persisting saga state in DB — coordinator can crash and recover. Choreography would have been better if teams owned separate services independently.</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-card-title">📖 CQRS — read/write split</div>
+      <p>High-frequency reads (customer profiles, order history) were hammering transactional MySQL. Introduced <strong>Redis read models</strong> — denormalized views updated via Kafka events. Result: &lt;20ms reads, 2K+ req/min offloaded, ~40% Redis memory increase vs ~60% DB CPU reduction.</p>
+      <div class="tradeoff">⚖ Tradeoff: read stale risk (eventual consistency window ~200ms). Mitigated with 5s TTL + cache invalidation on write events. Chosen over DB read replicas because read patterns were key-based — replicas add replication lag without solving the latency problem.</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-card-title">📮 Outbox Pattern — exactly-once</div>
+      <p>Standard produce-after-commit risks silent event loss on crash between DB write and Kafka publish. Outbox writes event <strong>atomically in the same DB transaction</strong> as the business record. Relay service polls and publishes — no event is ever skipped.</p>
+      <div class="tradeoff">⚖ Tradeoff: polling relay adds ~50–100ms publishing latency. Acceptable for our async flows. Adds operational complexity (relay must be monitored). At-least-once delivery from relay requires idempotent consumers downstream.</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-card-title">🔄 Idempotent consumers</div>
+      <p>Kafka's at-least-once delivery means any consumer can receive the same event twice on retry or rebalance. Every consumer checks a <strong>processed_events deduplication table</strong> before processing. On duplicate, skip and ack — no double-processing.</p>
+      <div class="tradeoff">⚖ Tradeoff: one extra DB read per message. At 5M events/day that's 5M reads — managed by indexing on event_id and batching. Exactly-once delivery (transactions API) was considered but rejected: higher broker overhead and limited to single-partition consumers.</div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-card-title">🛡️ Redis vs DB read replicas</div>
+      <p>Read replicas handle complex SQL queries well but still involve replication lag + query parsing overhead. Chose Redis because <strong>access patterns were pure key lookups</strong> (customer by ID, order by ID). Sub-millisecond, no query planner overhead.</p>
+      <div class="tradeoff">⚖ Tradeoff: Redis memory cost ~40% higher than replica storage for our dataset. Justified: Redis reduced DB P95 from 100ms → &lt;20ms, cutting DB instance cost by ~35% (downsized RDS tier). Net positive on infra spend.</div>
+    </div>
+  </div>
+
+  <!-- SYSTEM DIAGRAM -->
+  <div class="diagram-wrap fade-in">
+    <div class="diagram-bar"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div><span class="diagram-title">payment-saga-flow — orchestrated saga architecture</span></div>
+    <div class="diagram-body">
+      <svg viewBox="0 0 820 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#00cc66"/>
+          </marker>
+          <marker id="arrow-red" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#ff5555"/>
+          </marker>
+        </defs>
+        <!-- Background -->
+        <rect width="820" height="320" fill="#0d0d0d"/>
+        <!-- Nodes -->
+        <!-- Client -->
+        <rect x="20" y="130" width="90" height="40" rx="2" fill="#111" stroke="#00cc66" stroke-width="1"/>
+        <text x="65" y="155" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#00ff88">Client</text>
+        <!-- API Gateway -->
+        <rect x="145" y="130" width="100" height="40" rx="2" fill="#111" stroke="#00e5ff" stroke-width="1"/>
+        <text x="195" y="149" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#00e5ff">API Gateway</text>
+        <text x="195" y="162" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#4e7a4e">rate-limit / JWT</text>
+        <!-- Order Service (Coordinator) -->
+        <rect x="295" y="100" width="120" height="50" rx="2" fill="#003a1e" stroke="#00ff88" stroke-width="1.5"/>
+        <text x="355" y="121" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#00ff88">Order Service</text>
+        <text x="355" y="136" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#00cc66">[Saga Coordinator]</text>
+        <text x="355" y="148" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#4e7a4e">saga_state in DB</text>
+        <!-- Kafka -->
+        <rect x="290" y="220" width="130" height="36" rx="2" fill="#111" stroke="#ffb347" stroke-width="1"/>
+        <text x="355" y="238" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#ffb347">Apache Kafka</text>
+        <text x="355" y="250" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#4e7a4e">12 partitions · DLQ</text>
+        <!-- Payment Service -->
+        <rect x="475" y="60" width="105" height="40" rx="2" fill="#111" stroke="#00cc66" stroke-width="1"/>
+        <text x="527" y="79" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#c8f0c8">Payment Svc</text>
+        <text x="527" y="92" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#4e7a4e">idempotent · outbox</text>
+        <!-- Inventory Service -->
+        <rect x="475" y="130" width="105" height="40" rx="2" fill="#111" stroke="#00cc66" stroke-width="1"/>
+        <text x="527" y="149" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#c8f0c8">Inventory Svc</text>
+        <text x="527" y="162" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#4e7a4e">reserve / release</text>
+        <!-- Delivery Service -->
+        <rect x="475" y="200" width="105" height="40" rx="2" fill="#111" stroke="#00cc66" stroke-width="1"/>
+        <text x="527" y="219" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#c8f0c8">Delivery Svc</text>
+        <text x="527" y="232" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#4e7a4e">dispatch / cancel</text>
+        <!-- Redis -->
+        <rect x="640" y="100" width="90" height="36" rx="2" fill="#111" stroke="#c084fc" stroke-width="1"/>
+        <text x="685" y="119" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#c084fc">Redis CQRS</text>
+        <text x="685" y="130" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#4e7a4e">&lt;20ms reads</text>
+        <!-- MySQL -->
+        <rect x="640" y="170" width="90" height="36" rx="2" fill="#111" stroke="#00e5ff" stroke-width="1"/>
+        <text x="685" y="189" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#00e5ff">MySQL</text>
+        <text x="685" y="200" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#4e7a4e">transactional · saga state</text>
+        <!-- DLQ label -->
+        <rect x="475" y="270" width="105" height="32" rx="2" fill="#111" stroke="#ff5555" stroke-width="1"/>
+        <text x="527" y="287" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#ff5555">DLQ + Replay</text>
+        <text x="527" y="298" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7.5" fill="#4e7a4e">3 retries then isolate</text>
+        <!-- Arrows -->
+        <line x1="110" y1="150" x2="143" y2="150" stroke="#00cc66" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="245" y1="150" x2="293" y2="132" stroke="#00cc66" stroke-width="1" marker-end="url(#arrow)"/>
+        <!-- coordinator to kafka -->
+        <line x1="355" y1="150" x2="355" y2="218" stroke="#ffb347" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+        <!-- kafka to services -->
+        <line x1="420" y1="232" x2="473" y2="282" stroke="#ff5555" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrow-red)"/>
+        <line x1="380" y1="228" x2="473" y2="213" stroke="#00cc66" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="390" y1="222" x2="473" y2="155" stroke="#00cc66" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="370" y1="220" x2="473" y2="88" stroke="#00cc66" stroke-width="1" marker-end="url(#arrow)"/>
+        <!-- services to redis/mysql -->
+        <line x1="580" y1="90" x2="638" y2="110" stroke="#c084fc" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrow)"/>
+        <line x1="580" y1="150" x2="638" y2="182" stroke="#00e5ff" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrow)"/>
+        <!-- Legend -->
+        <rect x="20" y="270" width="220" height="38" rx="2" fill="#111" stroke="#1a1a1a" stroke-width="1"/>
+        <line x1="30" y1="282" x2="55" y2="282" stroke="#00cc66" stroke-width="1" marker-end="url(#arrow)"/>
+        <text x="60" y="286" font-family="JetBrains Mono,monospace" font-size="8" fill="#4e7a4e">event flow</text>
+        <line x1="30" y1="297" x2="55" y2="297" stroke="#ffb347" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+        <text x="60" y="300" font-family="JetBrains Mono,monospace" font-size="8" fill="#4e7a4e">kafka publish</text>
+        <line x1="120" y1="282" x2="145" y2="282" stroke="#ff5555" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrow-red)"/>
+        <text x="150" y="286" font-family="JetBrains Mono,monospace" font-size="8" fill="#4e7a4e">failure path</text>
+        <line x1="120" y1="297" x2="145" y2="297" stroke="#c084fc" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrow)"/>
+        <text x="150" y="300" font-family="JetBrains Mono,monospace" font-size="8" fill="#4e7a4e">cache/db write</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ── -->
+<section class="sec" id="projects">
+  <div class="sec-header fade-in">
+    <span class="sec-tag">04.</span>
+    <h2 class="sec-title">projects/</h2>
+    <div class="sec-line"></div>
+  </div>
+
+  <!-- ── FINANCIAL SERVICES (FLAGSHIP) ── -->
+  <div class="project-card flagship fade-in">
+    <div class="pc-header">
+      <div>
+        <div class="pc-title">Financial Services Modernization Platform</div>
+        <div class="pc-sub">Banking Client @ Accenture &mdash; 4-member team &mdash; 100K+ req/day</div>
+      </div>
+      <span class="badge badge-prod">Production</span>
+    </div>
+    <div class="pc-body">
+      <div class="pc-section">
+        <div class="pc-section-label">🔴 Problem</div>
+        <p style="font-size:12.5px;color:var(--text-dim);line-height:1.8;">Legacy monolith handling critical banking flows suffered from tight coupling (slow releases), DB contention (P95 ~800ms), and zero fault isolation (cascading failures under load).</p>
+      </div>
+      <div class="pc-section">
+        <div class="pc-section-label">🔑 What I Proposed &amp; Drove</div>
+        <div class="decision-row">
+          <div class="decision-item"><span class="dc">Service boundary design</span><span class="dw">→ Account, Payment, Reconciliation domains — I defined event contracts and data ownership</span></div>
+          <div class="decision-item"><span class="dc">Kafka adoption proposal</span><span class="dw">→ Presented async-vs-REST tradeoff to team; got buy-in; defined topic + partition strategy</span></div>
+          <div class="decision-item"><span class="dc">Saga pattern selection</span><span class="dw">→ Proposed orchestrated (not choreographed) Saga with explicit compensation logic</span></div>
+          <div class="decision-item"><span class="dc">Outbox pattern</span><span class="dw">→ Identified dual-write risk; proposed and implemented Outbox with relay service</span></div>
+          <div class="decision-item"><span class="dc">CQRS + Redis read model</span><span class="dw">→ Defined denormalization strategy; justified memory cost vs DB load reduction to team</span></div>
+        </div>
+      </div>
+      <div class="pc-section">
+        <div class="pc-section-label">⚙️ Key Architecture Decisions &amp; Brutal Tradeoffs</div>
+        <div class="decision-row">
+          <div class="decision-item">
+            <span class="dc">Orchestrated Saga</span>
+            <span class="dw">→ Central coordinator owns state. Tradeoff: coordinator is coupling point + SPOF. Fixed by persisting saga state — crash-recoverable.</span>
+          </div>
+          <div class="decision-item">
+            <span class="dc">At-least-once Kafka</span>
+            <span class="dw">→ Chose at-least-once + idempotent consumers over exactly-once (Kafka transactions). Exactly-once adds ~30–40% broker overhead; idempotency check is cheaper at our scale.</span>
+          </div>
+          <div class="decision-item">
+            <span class="dc">Redis eventual consistency</span>
+            <span class="dw">→ CQRS read models are ~200ms stale. Acceptable for profile reads; not acceptable for payment status — payment queries bypass cache and hit MySQL directly.</span>
+          </div>
+        </div>
+      </div>
+      <div class="pc-section">
+        <div class="pc-section-label">💀 What Broke &amp; What I Fixed</div>
+        <div class="failure-item"><span class="fi-icon">✗</span><span class="fi-text"><strong>Duplicate payments on retry:</strong> Kafka retry re-triggered payment step — double debit. Fixed: idempotency key (transaction_id) with unique DB constraint + processed_events deduplication table.</span></div>
+        <div class="failure-item"><span class="fi-icon">✗</span><span class="fi-text"><strong>Kafka consumer lag explosion:</strong> 3× traffic spike, 3-partition topic couldn't scale. Consumer lag hit 100K+ messages. Fixed: repartitioned 3 → 12, scaled consumer group, added Grafana alert at 10K lag threshold.</span></div>
+        <div class="failure-item"><span class="fi-icon">✗</span><span class="fi-text"><strong>Cascading timeout storm:</strong> Payment gateway slowdown exhausted Account service threads. Fixed: Resilience4j bulkhead on payment client — downstream degradation now isolated, doesn't bleed.</span></div>
+        <div class="failure-item"><span class="fi-icon">✗</span><span class="fi-text"><strong>Silent N+1 query killer:</strong> Transaction history API was ~800ms P95 — discovered via MySQL slow query log + execution plan. Single JOIN rewrite: 800ms → 500ms, no cache needed.</span></div>
+      </div>
+      <div class="pc-section">
+        <div class="pc-section-label">💰 Cost Awareness</div>
+        <p style="font-size:12px;color:var(--text-dim);line-height:1.85;">Redis CQRS model increased memory usage by ~40% but reduced MySQL CPU load by ~60%, enabling a tier downgrade — net infra cost reduction. Kafka cluster operational overhead justified at 5M+ events/day (polling-based queue would require heavier DB at same throughput). EKS chosen over EC2 for zero-downtime rolling deployments — operational cost offset by eliminating manual deployment risk.</p>
+      </div>
+    </div>
+    <div class="pc-metrics">
+      <div class="metric"><span class="metric-val">100K+</span><span class="metric-key">Req / Day</span></div>
+      <div class="metric"><span class="metric-val">500ms</span><span class="metric-key">P95 (was 800ms)</span></div>
+      <div class="metric"><span class="metric-val">5M+</span><span class="metric-key">Events / Day</span></div>
+      <div class="metric"><span class="metric-val">&lt;0.2%</span><span class="metric-key">Data Loss (was 5%)</span></div>
+      <div class="metric"><span class="metric-val">&lt;20ms</span><span class="metric-key">Redis Read Latency</span></div>
+      <div class="metric"><span class="metric-val">85%+</span><span class="metric-key">Test Coverage</span></div>
+    </div>
+    <div class="pc-footer-tags">
+      <span class="tag hot">Java 21</span><span class="tag hot">Kafka</span><span class="tag hot">Saga</span><span class="tag hot">CQRS</span><span class="tag hot">Outbox</span><span class="tag">MySQL</span><span class="tag">Redis</span><span class="tag">Resilience4j</span><span class="tag">AWS EKS</span><span class="tag">OpenTelemetry</span>
+    </div>
+  </div>
+
+  <!-- ── FOODIE ── -->
+  <div class="project-card fade-in">
+    <div class="pc-header">
+      <div>
+        <div class="pc-title">FOODIE — Distributed Food Ordering Platform</div>
+        <div class="pc-sub">Personal Project — end-to-end system design &amp; load tested</div>
+      </div>
+      <span class="badge badge-personal">Personal Project</span>
+    </div>
+    <div class="pc-body">
+      <div class="pc-section">
+        <div class="pc-section-label">🎯 Goal</div>
+        <p style="font-size:12.5px;color:var(--text-dim);line-height:1.8;">Design a real-world distributed ordering system: handle multi-step transactions (order → payment → delivery), survive partial failures without inconsistent state, scale independently across domains, and support real-time delivery tracking. Designed and validated end-to-end — not just described.</p>
+      </div>
+      <div class="pc-section">
+        <div class="pc-section-label">🔑 What I Owned</div>
+        <div class="decision-row">
+          <div class="decision-item"><span class="dc">Full architecture design</span><span class="dw">→ 6 services + API Gateway, event contracts, Kafka topic strategy</span></div>
+          <div class="decision-item"><span class="dc">Saga orchestrator</span><span class="dw">→ Order service as coordinator with persisted saga state machine</span></div>
+          <div class="decision-item"><span class="dc">Polyglot persistence</span><span class="dw">→ MySQL (transactional), MongoDB (catalog), Redis (real-time delivery state)</span></div>
+          <div class="decision-item"><span class="dc">IaC + CI/CD</span><span class="dw">→ Terraform + Helm on EKS, rolling deployments, zero-downtime</span></div>
+        </div>
+      </div>
+      <div class="pc-section">
+        <div class="pc-section-label">⚙️ Architecture Decisions &amp; Tradeoffs</div>
+        <div class="decision-row">
+          <div class="decision-item">
+            <span class="dc">Orchestration, not choreography</span>
+            <span class="dw">→ Centralized control, explicit compensation. Tradeoff: coordinator complexity handled via persistent saga state + recovery scheduler.</span>
+          </div>
+          <div class="decision-item">
+            <span class="dc">Outbox pattern</span>
+            <span class="dw">→ Solved DB + Kafka dual-write atomicity. Tradeoff: ~50–100ms publish delay from relay polling — acceptable for async order flow.</span>
+          </div>
+          <div class="decision-item">
+            <span class="dc">CQRS + Redis reads</span>
+            <span class="dw">→ &lt;20ms read latency. Tradeoff: eventual consistency (~200ms window). Payment status bypasses cache — reads directly from MySQL for correctness.</span>
+          </div>
+          <div class="decision-item">
+            <span class="dc">Probabilistic cache expiry</span>
+            <span class="dw">→ Fixed stampede on hot keys. Tradeoff: slightly stale data on early expiry — acceptable vs DB CPU spike from simultaneous misses.</span>
+          </div>
+        </div>
+      </div>
+      <div class="pc-section">
+        <div class="pc-section-label">💀 Failure Scenarios Validated</div>
+        <div class="failure-item"><span class="fi-icon">✗</span><span class="fi-text"><strong>Duplicate order/payment events:</strong> Kafka retries caused double-processing. Fixed: idempotent consumers using event_id + unique DB constraint. Verified by forcing consumer retry in test.</span></div>
+        <div class="failure-item"><span class="fi-icon">✗</span><span class="fi-text"><strong>Payment success, order stuck PENDING:</strong> Event publish failed after DB write. Fixed: Outbox pattern + retry publisher. Verified by killing service between DB write and publish.</span></div>
+        <div class="failure-item"><span class="fi-icon">✗</span><span class="fi-text"><strong>Saga stuck mid-flow on coordinator crash:</strong> Stateless coordinator lost progress. Fixed: persisted saga state in DB + recovery scheduler retries stuck sagas on restart.</span></div>
+        <div class="failure-item"><span class="fi-icon">✗</span><span class="fi-text"><strong>Cache stampede on hot keys:</strong> Simultaneous expiry sent 500+ requests to MySQL. Fixed: probabilistic early expiration + mutex lock on cache miss.</span></div>
+      </div>
+      <div class="pc-section">
+        <div class="pc-section-label">📊 Load Test Results (k6 — 200 concurrent users)</div>
+        <div class="decision-row">
+          <div class="decision-item"><span class="dc" style="color:var(--green);">Throughput</span><span class="dw">→ ~1,200 req/sec sustained</span></div>
+          <div class="decision-item"><span class="dc" style="color:var(--green);">P95 latency</span><span class="dw">→ ~310ms end-to-end order flow</span></div>
+          <div class="decision-item"><span class="dc" style="color:var(--green);">Kafka lag</span><span class="dw">→ &lt;500 messages stable under load</span></div>
+          <div class="decision-item"><span class="dc" style="color:var(--green);">Redis read latency</span><span class="dw">→ 8–18ms p95</span></div>
+          <div class="decision-item"><span class="dc" style="color:var(--green);">Error rate</span><span class="dw">→ ~0.3% (transient retries, not data corruption)</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="pc-metrics">
+      <div class="metric"><span class="metric-val">6</span><span class="metric-key">Microservices</span></div>
+      <div class="metric"><span class="metric-val">1,200 rps</span><span class="metric-key">Load Tested</span></div>
+      <div class="metric"><span class="metric-val">310ms</span><span class="metric-key">P95 Latency</span></div>
+      <div class="metric"><span class="metric-val">&lt;20ms</span><span class="metric-key">Redis Read</span></div>
+      <div class="metric"><span class="metric-val">chaos</span><span class="metric-key">Failure Tested</span></div>
+    </div>
+    <div class="pc-footer-tags">
+      <span class="tag hot">Java 21</span><span class="tag hot">Kafka</span><span class="tag hot">Saga</span><span class="tag hot">CQRS</span><span class="tag hot">Outbox</span><span class="tag">MySQL</span><span class="tag">MongoDB</span><span class="tag">Redis</span><span class="tag">AWS EKS</span><span class="tag">Terraform</span><span class="tag">k6</span>
+    </div>
+    <div style="padding:.5rem 1.5rem 1.2rem 1.8rem;">
+      <a href="https://github.com/Chandasaiprakash/foodie" target="_blank" style="font-size:11px;color:var(--text-dim);text-decoration:none;text-transform:uppercase;letter-spacing:.08em;transition:color .2s;" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text-dim)'">→ View on GitHub</a>
+    </div>
+  </div>
+
+  <!-- ── IOT ── -->
+  <div class="project-card fade-in">
+    <div class="pc-header">
+      <div>
+        <div class="pc-title">IoT Telemetry Ingestion Platform</div>
+        <div class="pc-sub">Manufacturing Client @ Accenture &mdash; 5M+ events/day production pipeline</div>
+      </div>
+      <span class="badge badge-prod">Production</span>
+    </div>
+    <div class="pc-body">
+      <div class="pc-section">
+        <div class="pc-section-label">🔴 Problem</div>
+        <p style="font-size:12.5px;color:var(--text-dim);line-height:1.8;">High-frequency device telemetry (~5M+ events/day) with burst spikes during manufacturing shifts. Synchronous ingestion caused ~5% event drops under load. No replay meant failed events were permanently lost. JVM OOM crashes occurred silently after ~6–8 hours — no alerts before crash.</p>
+      </div>
+      <div class="pc-section">
+        <div class="pc-section-label">🔑 What I Owned</div>
+        <div class="decision-row">
+          <div class="decision-item"><span class="dc">Kafka ingestion buffer design</span><span class="dw">→ Decoupled producers from consumers; defined device_id-based partitioning strategy</span></div>
+          <div class="decision-item"><span class="dc">Manual offset management</span><span class="dw">→ Replaced auto-commit; offset committed only after successful processing — no silent loss on crash</span></div>
+          <div class="decision-item"><span class="dc">DLQ + replay pipeline</span><span class="dw">→ Poison messages isolated after 3 retries; replay without impacting main flow</span></div>
+          <div class="decision-item"><span class="dc">JVM memory leak debugging</span><span class="dw">→ Led heap dump analysis + CloudWatch metrics; identified unbounded deduplication map</span></div>
+        </div>
+      </div>
+      <div class="pc-section">
+        <div class="pc-section-label">⚙️ Architecture Decisions &amp; Tradeoffs</div>
+        <div class="decision-row">
+          <div class="decision-item">
+            <span class="dc">Kafka as shock absorber</span>
+            <span class="dw">→ Producers write at device speed; consumers process at controlled rate. Tradeoff: Kafka cluster operational overhead — justified vs event loss under burst.</span>
+          </div>
+          <div class="decision-item">
+            <span class="dc">Partitioning by device_id</span>
+            <span class="dw">→ Guarantees per-device ordering without cross-device constraints. Tradeoff: hot partition risk on high-frequency devices — monitored via partition lag metrics.</span>
+          </div>
+          <div class="decision-item">
+            <span class="dc">Manual offset commit</span>
+            <span class="dw">→ Zero silent data loss on consumer crash. Tradeoff: at-least-once delivery — requires idempotent processing for duplicate events.</span>
+          </div>
+          <div class="decision-item">
+            <span class="dc">Caffeine over HashMap</span>
+            <span class="dw">→ Bounded deduplication cache (TTL + max size). Tradeoff: slightly higher miss rate vs unbounded map — acceptable to eliminate OOM risk entirely.</span>
+          </div>
+        </div>
+      </div>
+      <div class="pc-section">
+        <div class="pc-section-label">💀 What Broke &amp; What I Fixed</div>
+        <div class="failure-item"><span class="fi-icon">✗</span><span class="fi-text"><strong>JVM OOM crash (6–8hr cycle):</strong> Deduplication logic stored all processed events in unbounded HashMap. Memory grew linearly until OOMKilled. Fixed: replaced with Caffeine (TTL + size bound). Added heap usage alert at 75% — not 100%.</span></div>
+        <div class="failure-item"><span class="fi-icon">✗</span><span class="fi-text"><strong>Consumer lag explosion during shift spike:</strong> Processing slower than ingestion rate. Fixed: tuned max.poll.records, scaled consumer group horizontally, added lag-based autoscaling trigger.</span></div>
+        <div class="failure-item"><span class="fi-icon">✗</span><span class="fi-text"><strong>Out-of-order replay from DLQ:</strong> DLQ replay ignored original sequence_number. Caused ordering violations on replay. Fixed: introduced sequence_number header + ordered replay logic in replay service.</span></div>
+      </div>
+      <div class="pc-section">
+        <div class="pc-section-label">💰 Cost Awareness</div>
+        <p style="font-size:12px;color:var(--text-dim);line-height:1.85;">Manual offset commit adds minor coordination overhead (~5ms) vs auto-commit — fully justified by eliminating event loss. Caffeine cache uses bounded heap memory (&lt;200MB) vs unbounded HashMap that was consuming 2–4GB before OOM. Kafka cluster overhead offset by eliminating the 5% event loss rate — data recovery at that scale would be more expensive.</p>
+      </div>
+    </div>
+    <div class="pc-metrics">
+      <div class="metric"><span class="metric-val">5M+</span><span class="metric-key">Events/Day</span></div>
+      <div class="metric"><span class="metric-val">&lt;1s</span><span class="metric-key">Ingestion Latency</span></div>
+      <div class="metric"><span class="metric-val">&lt;0.2%</span><span class="metric-key">Data Loss (was 5%)</span></div>
+      <div class="metric"><span class="metric-val">0</span><span class="metric-key">OOM Crashes Post-Fix</span></div>
+    </div>
+    <div class="pc-footer-tags">
+      <span class="tag hot">Kafka</span><span class="tag hot">Manual Offset Commit</span><span class="tag hot">DLQ</span><span class="tag">Spring Boot</span><span class="tag">Caffeine</span><span class="tag">AWS CloudWatch</span><span class="tag">Heap Dump Analysis</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRODUCTION INCIDENTS ── -->
+<section class="sec" id="incidents">
+  <div class="sec-header fade-in">
+    <span class="sec-tag">05.</span>
+    <h2 class="sec-title">production_incidents.log</h2>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="term fade-in" style="margin-bottom:2rem;">
+    <div class="term-bar"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div><span class="term-title">real failures — what broke, why, and how I fixed it</span></div>
+    <div class="term-body">
+      <div><span class="c"># Real engineers talk about what failed. Here's mine.</span></div>
+      <div><span class="c"># All incidents below are production. All are resolved.</span></div>
+    </div>
+  </div>
+
+  <div class="incident-card resolved fade-in">
+    <div class="incident-header">
+      <div class="incident-title">🚨 INC-001 — Duplicate Payment Processing</div>
+      <span class="incident-badge">Critical · Resolved</span>
+    </div>
+    <div class="incident-block"><div class="incident-block-title">What Happened</div><p>Kafka consumer retried after timeout. DB write had already succeeded. Same payment processed twice → double debit to customer account.</p></div>
+    <div class="incident-block"><div class="incident-block-title">Root Cause</div><p>Assumed "at-least-once delivery" wouldn't cause duplicates in practice. No idempotency enforcement at consumer level.</p></div>
+    <div class="incident-block"><div class="incident-block-title">Fix</div><ul><li>Introduced idempotency key (transaction_id) with unique DB constraint</li><li>Added processed_events table to track consumed event IDs per consumer</li><li>Made consumer logic safe for infinite retries — dedup on entry</li></ul></div>
+    <div class="incident-learning">Never trust Kafka delivery semantics — design every consumer as idempotent, or you will corrupt financial data. The delivery guarantee is a broker property, not a business guarantee.</div>
+  </div>
+
+  <div class="incident-card resolved fade-in">
+    <div class="incident-header">
+      <div class="incident-title">🚨 INC-002 — Kafka Consumer Lag Explosion</div>
+      <span class="incident-badge">High · Resolved</span>
+    </div>
+    <div class="incident-block"><div class="incident-block-title">What Happened</div><p>Traffic spike (~3× normal load). Consumer couldn't keep up — lag grew to 100K+ messages. Downstream systems started serving stale data. On-call woke up to Grafana alerts.</p></div>
+    <div class="incident-block"><div class="incident-block-title">Root Cause</div><p>Under-partitioned topic (3 partitions). Consumer group size was locked to partition count — couldn't scale horizontally beyond 3 consumers.</p></div>
+    <div class="incident-block"><div class="incident-block-title">Fix</div><ul><li>Increased partitions: 3 → 12 (requires careful key rebalancing)</li><li>Scaled consumer group to match new partition count</li><li>Added Grafana lag alert at 10K threshold (not 100K)</li></ul></div>
+    <div class="incident-learning">Kafka scalability is bounded by partition count — you don't scale consumers, you scale partitions. Design partition count for future peak, not current load. Changing partitions in production is painful.</div>
+  </div>
+
+  <div class="incident-card resolved fade-in">
+    <div class="incident-header">
+      <div class="incident-title">🚨 INC-003 — Redis Cache Stampede</div>
+      <span class="incident-badge">High · Resolved</span>
+    </div>
+    <div class="incident-block"><div class="incident-block-title">What Happened</div><p>Hot keys expired simultaneously. 500+ concurrent requests missed cache and hit MySQL. DB CPU spiked to 95% — latency degraded across all services for ~40 seconds.</p></div>
+    <div class="incident-block"><div class="incident-block-title">Root Cause</div><p>Naive TTL — all instances of the same key set with identical expiry time. No protection against concurrent cache miss.</p></div>
+    <div class="incident-block"><div class="incident-block-title">Fix</div><ul><li>Implemented probabilistic early expiration (PER) — expire slightly before TTL based on recomputation cost</li><li>Added mutex locking on cache miss — only one thread recomputes, rest wait</li><li>Added jitter to TTL values (±10%) across keys</li></ul></div>
+    <div class="incident-learning">Caching is not just a performance optimization — it's a distributed systems problem. A cache that expires everything at once is a time bomb pointed at your database.</div>
+  </div>
+
+  <div class="incident-card resolved fade-in">
+    <div class="incident-header">
+      <div class="incident-title">🚨 INC-004 — JVM OOM Crash in Telemetry Pipeline</div>
+      <span class="incident-badge">Critical · Resolved</span>
+    </div>
+    <div class="incident-block"><div class="incident-block-title">What Happened</div><p>Telemetry service ran fine for ~6–8 hours, then OOMKilled. Zero warnings. Service restarted, ran fine again for 6–8 hours, then died again. Cyclic pattern.</p></div>
+    <div class="incident-block"><div class="incident-block-title">Root Cause</div><p>Deduplication logic stored processed event IDs in an unbounded HashMap. Memory grew linearly with event volume over time. No eviction, no TTL, no size bound.</p></div>
+    <div class="incident-block"><div class="incident-block-title">Fix</div><ul><li>Replaced HashMap with Caffeine cache (TTL=1h + maxSize=500K entries)</li><li>Added heap usage alert at 75% — not 100% (too late by then)</li><li>Enabled heap dump on OOM (-XX:+HeapDumpOnOutOfMemoryError) for future debugging</li></ul></div>
+    <div class="incident-learning">If memory usage is linear over time, your system is already dead — you just haven't noticed. Alert on trend, not threshold. A 75% heap alert gives you time to act; 100% means you're reading this post-mortem.</div>
+  </div>
+
+  <div class="incident-card resolved fade-in">
+    <div class="incident-header">
+      <div class="incident-title">🚨 INC-005 — Saga Stuck in Inconsistent State</div>
+      <span class="incident-badge">Critical · Resolved</span>
+    </div>
+    <div class="incident-block"><div class="incident-block-title">What Happened</div><p>Payment succeeded but Order remained PENDING. Delivery was never dispatched. Customer paid, got no food. Downstream services had conflicting state across three services.</p></div>
+    <div class="incident-block"><div class="incident-block-title">Root Cause</div><p>Saga coordinator was stateless — held saga progress in memory. Coordinator crashed mid-flow (k8s pod restart). On restart, had no memory of where the saga was. Didn't retry; didn't compensate.</p></div>
+    <div class="incident-block"><div class="incident-block-title">Fix</div><ul><li>Persisted saga state machine in DB — every step transition stored transactionally</li><li>Added recovery scheduler — on startup, find sagas in non-terminal states and retry</li><li>Made all compensation steps idempotent (safe to call multiple times)</li></ul></div>
+    <div class="incident-learning">Distributed transactions don't fail cleanly. A saga that doesn't persist state is a saga that will get stuck the moment your coordinator restarts. Design for recovery, not just execution.</div>
+  </div>
+</section>
+
+<!-- ── SECURITY ── -->
+<section class="sec" id="security">
+  <div class="sec-header fade-in">
+    <span class="sec-tag">06.</span>
+    <h2 class="sec-title">security.md</h2>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="term fade-in" style="margin-bottom:1.5rem;">
+    <div class="term-bar"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div><span class="term-title">security considerations — banking domain</span></div>
+    <div class="term-body">
+      <div><span class="c"># Banking domain + no security = 🚨. Here's how I think about it.</span></div>
+    </div>
+  </div>
+
+  <div class="security-grid fade-in">
+    <div class="sec-card">
+      <div class="sec-card-title">🔐 Auth Strategy</div>
+      <p><strong>JWT + OAuth2 (Spring Security)</strong> across all services. Short-lived access tokens (15min) + refresh token rotation. Service-to-service calls use <strong>mTLS</strong> within EKS cluster — no JWT for internal traffic (avoids token propagation overhead). Role-based access control (RBAC) enforced at controller layer.</p>
+    </div>
+    <div class="sec-card">
+      <div class="sec-card-title">🚦 Rate Limiting &amp; Abuse Prevention</div>
+      <p><strong>API Gateway-level rate limiting</strong> (per-IP + per-user token bucket). Payment endpoints have stricter limits (10 req/min per user) vs read endpoints (100 req/min). <strong>Idempotency keys</strong> on payment API prevent abuse via rapid retries. Failed auth attempts trigger exponential backoff.</p>
+    </div>
+    <div class="sec-card">
+      <div class="sec-card-title">🛡️ PII &amp; Sensitive Data Handling</div>
+      <p>Banking domain: <strong>PII masking in logs</strong> (account numbers, names masked at logging layer via log4j PatternLayout filter). Sensitive fields encrypted at rest (AES-256). Kafka messages carrying PII use <strong>field-level encryption</strong> — consumers decrypt only if authorized. No raw card data in application layer.</p>
+    </div>
+    <div class="sec-card">
+      <div class="sec-card-title">✅ Input Validation &amp; Injection Prevention</div>
+      <p><strong>Bean Validation (Jakarta)</strong> on all request DTOs — no raw input reaches service layer. JPA Criteria API + parameterized queries — no string concatenation in SQL. <strong>Kafka message schema validation</strong> at consumer entry point — malformed messages routed to DLQ, not processed. Content-type enforcement on all endpoints.</p>
+    </div>
+    <div class="sec-card">
+      <div class="sec-card-title">🔍 Audit Trail</div>
+      <p>All financial operations (transfers, account changes) emit structured <strong>audit events</strong> to a dedicated Kafka topic — append-only, tamper-evident log. Audit events include: user_id, timestamp, action, before/after state. Retained for compliance. <strong>Not deletable</strong> by application layer — separate consumer writes to cold storage.</p>
+    </div>
+    <div class="sec-card">
+      <div class="sec-card-title">⚠️ Known Gaps &amp; Trade-offs</div>
+      <p>mTLS certificate rotation adds operational overhead — managed via cert-manager in k8s. Field-level encryption on Kafka adds ~10ms processing overhead per message — acceptable for PII fields, not applied to all fields. Rate limiting at gateway (not service level) means internal abuse possible — acceptable within mTLS-protected cluster.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── EXPERIENCE ── -->
+<section class="sec" id="experience">
+  <div class="sec-header fade-in">
+    <span class="sec-tag">07.</span>
+    <h2 class="sec-title">experience.log</h2>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="exp-block fade-in">
+    <div class="exp-header">
+      <div>
+        <div class="exp-company">Accenture</div>
+        <div class="exp-role">Java Backend Engineer &mdash; 4-member backend team, Financial Services &amp; IoT</div>
+      </div>
+      <div class="exp-date">Sep 2022 — Present<br><span style="color:var(--green);font-size:10px;">Hyderabad, India</span></div>
+    </div>
+    <ul class="exp-bullets">
+      <li><strong>Proposed and drove Kafka adoption</strong> for async payment flows — presented REST vs async tradeoffs to team, defined topic + partition strategy; decision reviewed with senior architects in a 4-member backend team.</li>
+      <li><strong>Designed orchestrated Saga pattern</strong> with explicit compensation logic — chose orchestration over choreography for debuggability, owned idempotency guarantees and failure recovery design.</li>
+      <li><strong>Identified and introduced Outbox Pattern</strong> to eliminate dual-write data loss risk — designed relay service, justified operational overhead vs data integrity guarantee.</li>
+      <li><strong>Owned CQRS + Redis read model strategy</strong> — justified ~40% memory increase to team with ~60% DB CPU reduction data; enabled MySQL tier downgrade (net cost reduction).</li>
+      <li><strong>Debugged and fixed N+1 query bottleneck</strong> in transaction history APIs via MySQL execution plan analysis — P95 latency 800ms → 500ms, no caching required.</li>
+      <li><strong>Led JVM OOM debugging</strong> in IoT pipeline — heap dump analysis identified unbounded deduplication HashMap; replaced with Caffeine; eliminated recurring 6–8hr crash cycle.</li>
+      <li><strong>Configured Resilience4j</strong> circuit breakers + bulkheads — isolated payment gateway slowdowns from cascading into account and transaction services.</li>
+      <li><strong>Built end-to-end observability</strong>: OpenTelemetry traces, Grafana dashboards correlating Kafka consumer lag with API latency; caught INC-002 via lag alert before customer impact escalated.</li>
+      <li><strong>Achieved 85%+ test coverage</strong> on critical fund-transfer flows (TDD, JUnit 5 + Mockito) — reduced production regressions across 3 projects.</li>
+    </ul>
+    <div style="margin-top:1rem;" class="tags">
+      <span class="tag">Java 21</span><span class="tag">Spring Boot</span><span class="tag">Kafka</span><span class="tag">Redis</span><span class="tag">MySQL</span><span class="tag">AWS EKS</span><span class="tag">Resilience4j</span><span class="tag">OpenTelemetry</span><span class="tag">Saga</span><span class="tag">CQRS</span><span class="tag">Outbox</span>
+    </div>
+  </div>
+
+  <div class="term fade-in">
+    <div class="term-bar"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div><span class="term-title">certifications</span></div>
+    <div class="term-body">
+      <div><span class="g">✓</span> <span class="k">AZ-400</span> <span class="s">Microsoft Certified: DevOps Engineer Expert</span> <span class="c">— 2025</span></div>
+      <div><span class="g">✓</span> <span class="k">AZ-104</span> <span class="s">Microsoft Certified: Azure Administrator Associate</span> <span class="c">— 2025</span></div>
+      <div><span class="g">✓</span> <span class="k">AZ-900</span> <span class="s">Microsoft Certified: Azure Fundamentals</span> <span class="c">— 2024</span></div>
+      <div style="margin-top:.8rem;"><span class="c">// Education: B.Tech ECE — Malla Reddy Engineering College (2018–2022) | CGPA: 7.2</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section class="sec" id="contact">
+  <div class="sec-header fade-in">
+    <span class="sec-tag">08.</span>
+    <h2 class="sec-title">contact.sh</h2>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="term fade-in" style="margin-bottom:1.5rem;">
+    <div class="term-bar"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div><span class="term-title">bash</span></div>
+    <div class="term-body">
+      <div><span class="c"># ✅ Open to SDE2 / Senior Backend / Staff Engineer roles</span></div>
+      <div><span class="c"># 🎯 Product companies, MNCs — Hyderabad / Remote India</span></div>
+      <div><span class="c"># 💬 Ask me: Kafka design, Saga patterns, distributed systems failures</span></div>
+      <div style="margin-top:.5rem;"><span class="g">echo</span> <span class="s">"I own systems end-to-end. Let's build something that actually scales."</span></div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:1.5rem;" class="fade-in">
+    <a href="Chanda_Sai_Prakash_Resume_BE.pdf" download class="btn btn-resume">⬇ Download Resume (PDF)</a>
+  </div>
+
+  <div class="contact-grid fade-in">
+    <a href="mailto:chandasaiprakash123@gmail.com" class="contact-item">
+      <span class="contact-label">// email</span>
+      <span class="contact-val">chandasaiprakash123@gmail.com</span>
+    </a>
+    <a href="https://www.linkedin.com/in/chandasaiprakash/" target="_blank" class="contact-item">
+      <span class="contact-label">// linkedin</span>
+      <span class="contact-val">linkedin.com/in/chandasaiprakash</span>
+    </a>
+    <a href="https://github.com/Chandasaiprakash" target="_blank" class="contact-item">
+      <span class="contact-label">// github</span>
+      <span class="contact-val">github.com/Chandasaiprakash</span>
+    </a>
+    <a href="https://leetcode.com/u/Chandasaiprakash/" target="_blank" class="contact-item">
+      <span class="contact-label">// leetcode</span>
+      <span class="contact-val">leetcode.com/u/Chandasaiprakash</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span class="c">// csp@portfolio:~$ built with HTML · CSS · JS — hosted on GitHub Pages</span>
+</footer>
+
+<script>
+(function() {
+  // Scroll fade-in
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
+
+  // Active nav highlight
+  var sections = document.querySelectorAll('section[id]');
+  var navLinks = document.querySelectorAll('nav ul li a');
+  window.addEventListener('scroll', function() {
+    var current = '';
+    sections.forEach(function(s) {
+      if (window.scrollY >= s.offsetTop - 80) { current = s.id; }
+    });
+    navLinks.forEach(function(a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }, { passive: true });
+})();
+</script>
+</body>
+</html>
